@@ -5,47 +5,59 @@
   <title>Login Sucesso</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --bg-color: #f0f4f8;
+      --card-bg: #ffffff;
+      --text-color: #222;
+      --accent: #1DB954;
+      --input-bg: #ffffff;
+      --input-border: #ccc;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #f1f1f1;
+      --accent: #1DB954;
+      --input-bg: #2a2a2a;
+      --input-border: #444;
+    }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
+      background: var(--bg-color);
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      transition: background 0.3s ease;
     }
 
     .card {
-      background: #ffffff;
+      background: var(--card-bg);
       padding: 2rem 3rem;
       border-radius: 1.5rem;
       box-shadow: 0 8px 24px rgba(0,0,0,0.1);
       text-align: center;
       max-width: 400px;
       width: 100%;
-    }
-
-    .card h1 {
-      color: #2ecc71;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    .card p {
-      color: #555;
-      font-size: 1.1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .icon {
-      font-size: 4rem;
-      color: #2ecc71;
-      margin-bottom: 1rem;
+      color: var(--text-color);
     }
 
     .spotify-logo {
       width: 64px;
       margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
     }
 
     .url-container {
@@ -57,13 +69,14 @@
     .url-input {
       padding: 0.6rem;
       font-size: 1rem;
-      border: 1px solid #ccc;
+      border: 1px solid var(--input-border);
       border-radius: 8px;
-      width: 100%;
+      background-color: var(--input-bg);
+      color: var(--text-color);
     }
 
-    .copy-btn {
-      background-color: #2ecc71;
+    .copy-btn, .theme-toggle {
+      background-color: var(--accent);
       color: white;
       padding: 0.6rem;
       font-size: 1rem;
@@ -73,19 +86,23 @@
       transition: background-color 0.3s ease;
     }
 
-    .copy-btn:hover {
-      background-color: #27ae60;
+    .copy-btn:hover, .theme-toggle:hover {
+      background-color: #1aa34a;
     }
 
     .success-message {
       margin-top: 0.5rem;
-      color: #2ecc71;
+      color: var(--accent);
       font-weight: bold;
       display: none;
     }
+
+    .theme-toggle {
+      margin-top: 1rem;
+    }
   </style>
 </head>
-<body>
+<body data-theme="light">
   <div class="card">
     <img class="spotify-logo" src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" alt="Spotify Logo" />
     <h1>Código adquirido com sucesso!</h1>
@@ -96,19 +113,21 @@
       <button class="copy-btn" onclick="copyCode()">Copiar Código</button>
       <div id="mensagem" class="success-message">Código copiado com sucesso, retorne ao app.</div>
     </div>
+     <button class="theme-toggle" onclick="toggleTheme()">Alternar tema</button>
   </div>
 
   <script>
     document.getElementById("urlInput").value = window.location.href;
     const input = document.getElementById("urlInput")
     const msg = document.getElementById("mensagem");
-    
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
+    const code = new URLSearchParams(window.location.search).get("code")
     
     if (code) {
       input.value = code;
-      msg.textContent = "Código recebido com sucesso!";
+      msg.textContent = "Código extraido da URL com sucesso.";
+      msg.style.display = "block";
+    } else {
+      msg.textContent = "Nenhum parametro 'code' na URL encontrado.";
       msg.style.display = "block";
     }
     
@@ -121,6 +140,12 @@
       }).catch(err => {
         alert("Erro ao copiar código: " + err);
       });
+
+      function toggleTheme() {
+        const currentTheme = document.body.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+        document.body.setAttribute("data-theme", newTheme);
+      }
     }
   </script>
 </body>
