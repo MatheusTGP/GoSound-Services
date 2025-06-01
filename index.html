@@ -96,24 +96,19 @@
       font-weight: bold;
       display: none;
     }
-
-    .theme-toggle {
-      margin-top: 1rem;
-    }
   </style>
 </head>
-<body data-theme="light">
+<body data-theme="dark">
   <div class="card">
     <img class="spotify-logo" src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" alt="Spotify Logo" />
     <h1>Código adquirido com sucesso!</h1>
-    <p>Quase lá, agora volte para o aplicativo para inserir o código abaixo e concluir</p>
+    <p>Quase lá, agora volte para o aplicativo para inserir o código abaixo e concluir. esse código é de uso unico, caso ocorrer um erro tente novamente.</p>
 
     <div class="url-container">
       <input type="text" id="urlInput" class="url-input" readonly />
       <button class="copy-btn" onclick="copyCode()">Copiar Código</button>
       <div id="mensagem" class="success-message">Código copiado com sucesso, retorne ao app.</div>
     </div>
-     <button class="theme-toggle" onclick="toggleTheme()">Alternar tema</button>
   </div>
 
   <script>
@@ -140,12 +135,6 @@
       }).catch(err => {
         alert("Erro ao copiar código: " + err);
       });
-
-      function toggleTheme() {
-        const currentTheme = document.body.getAttribute("data-theme");
-        const newTheme = currentTheme === "dark" ? "light" : "dark";
-        document.body.setAttribute("data-theme", newTheme);
-      }
     }
   </script>
 </body>
