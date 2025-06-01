@@ -43,6 +43,11 @@
       margin-bottom: 1rem;
     }
 
+    .spotify-logo {
+      width: 64px;
+      margin-bottom: 1rem;
+    }
+
     .url-container {
       display: flex;
       flex-direction: column;
@@ -82,31 +87,39 @@
 </head>
 <body>
   <div class="card">
-    <div class="icon">✅</div>
-    <h1>Login efetuado com sucesso!</h1>
-    <p>Volte para o aplicativo para concluir</p>
+    <img class="spotify-logo" src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" alt="Spotify Logo" />
+    <h1>Código adquirido com sucesso!</h1>
+    <p>Quase lá, agora volte para o aplicativo para inserir o código abaixo e concluir</p>
 
     <div class="url-container">
       <input type="text" id="urlInput" class="url-input" readonly />
-      <button class="copy-btn" onclick="copiarUrl()">Copiar Coódigo</button>
+      <button class="copy-btn" onclick="copyCode()">Copiar Código</button>
       <div id="mensagem" class="success-message">Código copiado com sucesso, retorne ao app.</div>
     </div>
   </div>
 
   <script>
     document.getElementById("urlInput").value = window.location.href;
-
-    function copiarUrl() {
-      const input = document.getElementById("urlInput");
+    const input = document.getElementById("urlInput")
+    const msg = document.getElementById("mensagem");
+    
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    
+    if (code) {
+      input.value = code;
+      msg.textContent = "Código recebido com sucesso!";
+      msg.style.display = "block";
+    }
+    
+    function copyCode() {
       input.select();
       input.setSelectionRange(0, 99999);
-
       navigator.clipboard.writeText(input.value).then(() => {
-        const msg = document.getElementById("mensagem");
         msg.style.display = "block";
         setTimeout(() => msg.style.display = "none", 2000);
       }).catch(err => {
-        alert("Erro ao copiar: " + err);
+        alert("Erro ao copiar código: " + err);
       });
     }
   </script>
